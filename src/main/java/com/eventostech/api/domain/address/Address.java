@@ -1,6 +1,5 @@
 package com.eventostech.api.domain.address;
 
-
 import com.eventostech.api.domain.event.Event;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,6 +11,10 @@ import java.util.UUID;
 
 @Table(name = "address")
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Address {
     @Id
     @GeneratedValue
@@ -20,7 +23,7 @@ public class Address {
     private String city;
     private String uf;
 
-    @ManyToOne
-    @JoinColumn
+    @OneToOne
+    @JoinColumn(name = "event_id")
     private Event event;
 }

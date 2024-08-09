@@ -1,7 +1,6 @@
 package com.eventostech.api.config;
 
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,18 +13,11 @@ public class AWSConfig {
     @Value("${aws.region}")
     private String awsRegion;
 
-    @Value("${aws.access.key}")
-    private String awsAccessKey;
-
-    @Value("${aws.secret.key}")
-    private String awsSecretKey;
-
     @Bean
-    public AmazonS3 createS3Instance() {
-        BasicAWSCredentials awsCreds = new BasicAWSCredentials(awsAccessKey, awsSecretKey);
+    public AmazonS3 createS3Instance(){
         return AmazonS3ClientBuilder
                 .standard()
-                .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
+                .withCredentials(new DefaultAWSCredentialsProviderChain())
                 .withRegion(awsRegion)
                 .build();
     }
