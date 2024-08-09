@@ -27,14 +27,15 @@ A aplicação estará disponível em `http://localhost:8080`.
 
 ## Funcionalidades
 
-A API oferece as seguintes funcionalidades:
+API oferece as seguintes funcionalidades:
 
 - Criação de Eventos: Permite criar novos eventos com detalhes como nome, data, local e descrição.
 - Atualização de Eventos: Permite atualizar informações de eventos existentes.
 - Exclusão de Eventos: Permite excluir eventos.
 - Consulta de Eventos: Permite consultar eventos por diferentes critérios, como data e local.
 
-Exemplo de endpoint para criação de evento:
+## Exemplo de endpoint para criação de evento:
+* obs: utilizar no body o Multipart Form Data para envio de imagem
 
 ```json
 POST /api/events
@@ -46,5 +47,5 @@ POST /api/events
   "state": "SP",
   "remote": false,
   "eventUrl": "https://techconference.com",
-  "image": "https://techconference.com/logo.png"
+  "image": aquivo de imagem (file)
 }
