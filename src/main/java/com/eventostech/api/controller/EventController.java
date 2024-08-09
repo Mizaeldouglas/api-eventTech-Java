@@ -4,7 +4,6 @@ import com.eventostech.api.domain.event.Event;
 import com.eventostech.api.dto.event.EventRequestDTO;
 import com.eventostech.api.dto.event.EventResponseDTO;
 import com.eventostech.api.service.EventService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,8 +14,11 @@ import java.util.List;
 @RequestMapping("/api/event")
 public class EventController {
 
-    @Autowired
-    private EventService eventService;
+    private final EventService eventService;
+
+    public EventController(EventService eventService) {
+        this.eventService = eventService;
+    }
 
     @PostMapping(consumes = "multipart/form-data")
     public ResponseEntity<Event> create(@RequestParam("title") String title,
