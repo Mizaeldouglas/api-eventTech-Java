@@ -29,7 +29,7 @@ public class EventService {
     private EventRepository repository;
 
     public Event createEvent(EventRequestDTO data){
-        String imgUrl = "";
+        String imgUrl = null;
 
         if(data.image() != null){
             imgUrl = this.uploadImg(data.image());
@@ -59,7 +59,7 @@ public class EventService {
         } catch (Exception e){
             System.out.println("erro ao subir arquivo");
             System.out.println(e.getMessage());
-            return "";
+            return null;
         }
     }
 
