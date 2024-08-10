@@ -76,7 +76,7 @@ public class EventService {
         } catch (Exception e) {
             System.out.println("erro ao subir arquivo");
             System.out.println(e.getMessage());
-            return null;
+            return "";
         }
     }
 
