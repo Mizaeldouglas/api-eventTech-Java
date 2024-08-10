@@ -47,9 +47,6 @@ public class EventService {
 
         if (data.image() != null) {
             imgUrl = this.uploadImg(data.image());
-            if (imgUrl == null || imgUrl.isEmpty()) {
-                throw new RuntimeException("Erro ao fazer upload da imagem para o S3");
-            }
         }
 
         Event newEvent = new Event();
@@ -68,21 +65,20 @@ public class EventService {
         return newEvent;
     }
 
-
     private String uploadImg(MultipartFile multipartFile) {
         String filename = UUID.randomUUID() + "-" + multipartFile.getOriginalFilename();
 
         try {
-            s3Client.putObject(bucketName, filename, multipartFile.getInputStream(), null);
+            File file = this.convertMultipartToFile(multipartFile);
+            s3Client.putObject(bucketName, filename, file);
+            file.delete();
             return s3Client.getUrl(bucketName, filename).toString();
         } catch (Exception e) {
-            System.out.println("Erro ao subir arquivo");
-            e.printStackTrace();
-            return "";
+            System.out.println("erro ao subir arquivo");
+            System.out.println(e.getMessage());
+            return "imagem não carregada pois não funciona em ambiente de produção, apenas local pois não foi configurado o AWS S3 no render FREE";
         }
     }
-
-
 
     private File convertMultipartToFile(MultipartFile multipartFile) throws IOException {
         File convFile = new File(Objects.requireNonNull(multipartFile.getOriginalFilename()));
