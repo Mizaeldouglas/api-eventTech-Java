@@ -47,6 +47,9 @@ public class EventService {
 
         if (data.image() != null) {
             imgUrl = this.uploadImg(data.image());
+            if (imgUrl == null || imgUrl.isEmpty()) {
+                throw new RuntimeException("Erro ao fazer upload da imagem para o S3");
+            }
         }
 
         Event newEvent = new Event();
@@ -65,6 +68,7 @@ public class EventService {
         return newEvent;
     }
 
+
     private String uploadImg(MultipartFile multipartFile) {
         String filename = UUID.randomUUID() + "-" + multipartFile.getOriginalFilename();
 
@@ -74,9 +78,10 @@ public class EventService {
         } catch (Exception e) {
             System.out.println("Erro ao subir arquivo");
             e.printStackTrace();
-            return null;
+            return "";
         }
     }
+
 
 
     private File convertMultipartToFile(MultipartFile multipartFile) throws IOException {
