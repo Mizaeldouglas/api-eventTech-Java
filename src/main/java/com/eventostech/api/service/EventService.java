@@ -69,16 +69,15 @@ public class EventService {
         String filename = UUID.randomUUID() + "-" + multipartFile.getOriginalFilename();
 
         try {
-            File file = this.convertMultipartToFile(multipartFile);
-            s3Client.putObject(bucketName, filename, file);
-            file.delete();
+            s3Client.putObject(bucketName, filename, multipartFile.getInputStream(), null);
             return s3Client.getUrl(bucketName, filename).toString();
         } catch (Exception e) {
-            System.out.println("erro ao subir arquivo");
-            System.out.println(e.getMessage());
+            System.out.println("Erro ao subir arquivo");
+            e.printStackTrace();
             return "";
         }
     }
+
 
     private File convertMultipartToFile(MultipartFile multipartFile) throws IOException {
         File convFile = new File(Objects.requireNonNull(multipartFile.getOriginalFilename()));
