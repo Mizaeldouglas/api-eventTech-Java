@@ -33,6 +33,9 @@ public class EventService {
     @Autowired
     private EventRepository repository;
 
+    @Autowired
+    private AddressService addressService;
+
     public Event createEvent(EventRequestDTO data) {
         String imgUrl = null;
 
@@ -49,6 +52,9 @@ public class EventService {
         newEvent.setRemote(data.remote());
 
         repository.save(newEvent);
+        if (!data.remote()) {
+            this.addressService.createAddress(data, newEvent);
+        }
 
         return newEvent;
     }
@@ -76,11 +82,38 @@ public class EventService {
         return convFile;
     }
 
-    public List<EventResponseDTO> getEvents(int page, int size) {
+    public List<EventResponseDTO> getUpcomingEvents(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Event> eventsPage = repository.findAll(pageable);
-        return eventsPage.map(event -> new EventResponseDTO(event.getId(), event.getTitle(), event.getDescription(), event.getDate(), "event.getCity()", "event.getState()", event.getRemote(), event.getEventUrl(), event.getImgUrl())).toList();
+        Page<Event> eventsPage = repository.findUpcomingEvents(new Date(), pageable);
+        return getEventResponseDTOS(eventsPage);
+    }
+
+    public List<EventResponseDTO> getFilteredEvents(int page, int size, String title, String city, String uf, Date startDate, Date endDate) {
+        title = (title != null) ? title : "";
+        city = (city != null) ? city : "";
+        uf = (uf != null) ? uf : "";
+        startDate = (startDate != null) ? startDate : new Date(0);
+        endDate = (endDate != null) ? endDate : new Date();
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<Event> eventsPage = this.repository.findFilteredEvents(title, city, uf, startDate, endDate, pageable);
+        return getEventResponseDTOS(eventsPage);
 
     }
 
+    private List<EventResponseDTO> getEventResponseDTOS(Page<Event> eventsPage) {
+        return eventsPage.map(event -> new EventResponseDTO(
+                        event.getId(),
+                        event.getTitle(),
+                        event.getDescription(),
+                        event.getDate(),
+                        event.getAddress() != null ? event.getAddress().getCity() : "",
+                        event.getAddress() != null ? event.getAddress().getUf() : "",
+                        event.getRemote(),
+                        event.getEventUrl(),
+                        event.getImgUrl())
+                )
+                .stream().toList();
+    }
 }
