@@ -6,6 +6,7 @@ import com.eventostech.api.dto.event.EventRequestDTO;
 import com.eventostech.api.dto.event.EventResponseDTO;
 import com.eventostech.api.service.EventService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,7 @@ public class EventController {
     @Operation(summary = "Criar um novo evento", description = "Cria um novo evento com os detalhes fornecidos")
     public ResponseEntity<Event> create(@RequestParam("title") String title,
                                         @RequestParam(value = "description", required = false) String description,
-                                        @RequestParam("date") Long date,
+                                        @RequestParam("date") @Parameter(description = "Data do evento em formato timestamp. Utilize https://www.epochconverter.com para converter a data para timestamp.") Long date,
                                         @RequestParam("city") String city,
                                         @RequestParam("state") String state,
                                         @RequestParam("remote") Boolean remote,
