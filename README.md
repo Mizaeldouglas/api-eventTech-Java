@@ -115,4 +115,4 @@ API oferece as seguintes funcionalidades:
 ```
 
 ## Documentação da API
-* A documentação da API pode ser acessada através do Swagger em https://api-eventtech-java.onrender.com/swagger-ui/index.html.  
+* A documentação da API pode ser acessada através do Swagger em http://api-event-tech.us-east-1.elasticbeanstalk.com/swagger-ui/index.html.  
