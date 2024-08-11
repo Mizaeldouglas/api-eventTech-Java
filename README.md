@@ -12,6 +12,7 @@ Este projeto é uma API desenvolvida em Java para o EventTech. A API permite a g
 - postgresql
 - AWS S3 (para armazenamento de imagens)
 - Swagger (para documentação da API)
+- Deploy na AWS Elastic Beanstalk
 
 ## Como Instalar e Executar
 
@@ -52,6 +53,7 @@ API oferece as seguintes funcionalidades:
 
 ## Exemplo de endpoint para criação de evento:
 * obs: utilizar no body o Multipart Form Data para envio de imagem
+* obs: a data é no formato timestamp, https://www.epochconverter.com para converter a data para timestamp
 
 
 ### POST /api/events
